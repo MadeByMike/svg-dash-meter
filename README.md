@@ -4,6 +4,8 @@ SVG can make some really nice graphical UI elements but almost every library tha
 
 So here's the first of what I hope will be more no dependency SVG widgets.
 
+Demo: http://codepen.io/MadeByMike/full/472b4b25c0ca707430e68dd2801fe822/
+
 ##Basic usage
 
 ```
