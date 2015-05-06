@@ -1,6 +1,8 @@
 #SVG Dash Meter
 
-SVG can make some really nice graphical UI elements but almost every library that uses SVG has a dependency of either D3, Raphael or Velocity. And whilst  all of these libraries are great I often don't want to include them for the sake of a simple UI element.
+A no dependency SVG/JS widget. So small that once minified it has a size measured in negative kb.
+
+SVG can make some really nice graphical UI elements but almost every library that uses SVG has a dependency of either D3, Raphael or Velocity. Whilst  all of these libraries are great I often don't want to include them for the sake of a simple UI element.
 
 So here's the first of what I hope will be more no dependency SVG widgets.
 
@@ -48,3 +50,5 @@ setInterval(function(){
 	stops: [60, 75, 90]
 }
 ```
+
+Note: If you specify a `target` option the `target_shown` option will automatically be set to true. If not specified gradient stops will be set 15% either side of the target.
