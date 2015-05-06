@@ -1,4 +1,4 @@
- function svg_meter(elm, options){
+function svg_meter(elm, options){
 	var raf, rafID;
 	var defaults = {
 		target: 75,
@@ -148,7 +148,6 @@
 		value = (value > options.max) ? options.max : value;
 		targetWidth = (value/options.max)*(options.width-10);
 		indicatorPos = ((options.target/options.max)*(options.width-10))+5;
-		console.log(options.stops);
 		
 		target_indicator.setAttribute('x1', indicatorPos);
 		target_indicator.setAttribute('x2', indicatorPos);
