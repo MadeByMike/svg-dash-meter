@@ -1,4 +1,4 @@
-#SVG Dashboard Meter
+#SVG Dash Meter
 
 SVG can make some really nice graphical UI elements but almost every library that uses SVG has a dependency of either D3, Raphael or Velocity. And whilst  all of these libraries are great I often don't want to include them for the sake of a simple UI element.
 
