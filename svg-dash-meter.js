@@ -85,6 +85,7 @@
 	var target_indicator = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 	target_indicator.setAttribute('stroke-dasharray', '2 2');
 	target_indicator.setAttribute('stroke', '#555555');
+	target_indicator.setAttribute('stroke-width', '2px');
 	target_indicator.setAttribute('x1', 0);
 	target_indicator.setAttribute('x2', 0);
 	target_indicator.setAttribute('y1', '0');
