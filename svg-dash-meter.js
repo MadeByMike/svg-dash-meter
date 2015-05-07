@@ -15,11 +15,11 @@ function svg_meter(elm, options){
 		],
 		stops: [60, 75, 90]
 	};
-  
+  	// If a target is set make sure the target indicator is shown
 	if(!!options.target && !options.show_target){
 		options.show_target = true;
 	}
-   
+   	// If a target is set but no stops define the stops relative to the target
 	if(!!options.target && !options.stops){
 		options.stops = [
 			options.target - (options.max || defaults.max) *0.15,
@@ -36,7 +36,8 @@ function svg_meter(elm, options){
 			return window.setTimeout(cb, 16);
 		};
 	}
-	 
+	
+	// Utility function to extend options
 	var extend = function ( defaults, options ) {
 		var extended = {};
 		var prop;
@@ -54,13 +55,15 @@ function svg_meter(elm, options){
 	};
 	 
 	options = extend(defaults, options);
-	 
+	
+	// Start createing the SVG elements
 	var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
 	svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
 	svg.setAttribute('width', options.width);
 	svg.setAttribute('height', '30');
-
+	
+	// Using CSS for color tranistions cause smooth
 	var styles = document.createElementNS('http://www.w3.org/2000/svg','style');
 	styles.innerHTML = ".meter-fill{transition: fill "+options.duration/1000+"s ease; fill:green}";
 	svg.appendChild(styles);
@@ -97,7 +100,10 @@ function svg_meter(elm, options){
 	elm.appendChild(svg);
 
 	var animateMeter = function(targetWidth, targetColour){
-	
+		// Getting good preformance when setting SVG attributes with JS can be dificult
+		// Comparing the current time for each frame to the time the animation started 
+		// allows us to work out the percentage complete and ensure that the animation
+		// always completed over a specified duration, skipping frames if required.
 		meter_fill.setAttribute('style', 'fill:'+targetColour);
 		var currentValue;
     var startValue = parseFloat(meter_fill.getAttribute('width'));
@@ -112,46 +118,40 @@ function svg_meter(elm, options){
 			if (percentComplete === 1) {
 				currentValue = endValue;
 				meter_fill.setAttribute('width', currentValue);
-				if(!!window.requestAnimationFrame){
-					cancelAnimationFrame(rafID);
-				} else {
-					clearTimeout(rafID);
-				}
-				
 			} else {
-				var delta = endValue - startValue;
-				currentValue = startValue + (delta * percentComplete);
+				currentValue = startValue + ((endValue - startValue) * percentComplete);
 				meter_fill.setAttribute('width', currentValue);
 				rafID = raf(animationFrame);
 			}
 			
 		};
 		
-		if(!!window.requestAnimationFrame){
-			cancelAnimationFrame(rafID);
-		} else {
-			clearTimeout(rafID);
-		}
 		rafID = raf(animationFrame);
 	}
 	
-	
 	function pointOnGrad(n1,n2,p){
+		// Returns a point between 2 numbers at a given %
 		return Math.round(n1+((n2-n1)*p));
 	}
 	
 	var update = function(value){
-	
+		
 		options.value = value;
 		var targetWidth, targetColour, indicatorPos, p;
+		
+		// If the target value is outside the min\max range set it to either the min or the max value
 		value = (value < options.min) ? options.min : value;
 		value = (value > options.max) ? options.max : value;
+		
 		targetWidth = (value/options.max)*(options.width-10);
 		indicatorPos = ((options.target/options.max)*(options.width-10))+5;
 		
+		// Move the indicator
 		target_indicator.setAttribute('x1', indicatorPos);
 		target_indicator.setAttribute('x2', indicatorPos);
 		
+		// p representes the target point between 2 colors stops as a %
+		// To mix a colour simply find the point between each of the 2 rgb values 
 		if(value < options.stops[0] ){
 			targetColour= 'rgb('+options.gradient[0].r+','+options.gradient[0].g+','+options.gradient[0].b+')';
 		} else if (value < options.stops[1] ){
